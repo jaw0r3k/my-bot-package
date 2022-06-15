@@ -6,9 +6,7 @@ const TextChannel = require("./TextChannel");
 const User = require("./User");
 /**
  * @typedef {Object} ApiMessage
- * @property {?Array<Object>} components
- * @property {Boolean} pinned
- * @property {?(Number|String)} nonce
+ * @property
  * @property {Object} message_reference
  * @property {Number} flags
  * @property {String} application_id
@@ -62,9 +60,20 @@ module.exports = class Message {
          */
         this.reactions = Map(message.reactions.map(r => [r.emoji.id ?? r.emoji.name, new Reaction(client, r)]))
         /**
-         * @type {Array<Object} Message components
+         * @type {Array<Object>} Message components
+        */
+        this.components = data.components ?? null //[]
+        /**
+         * @type {Boolean} If message is pinned 
+        */
+        this.pinned = data.pinned ?? false
+        /**
+         * @type  {?(Number|String)} Message nonce
          */
-        this.components = data.components ?? []
+        this.nonce = data.nonce ?? null
+
+
+
         /**
          * @deprecated
          */
