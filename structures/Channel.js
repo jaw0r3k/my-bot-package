@@ -1,3 +1,4 @@
+// const TextChannel = require("./channels/TextChannel")
 
 module.exports = class Channel {
     constructor(client, data){

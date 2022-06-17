@@ -2,7 +2,7 @@ const Client = require("../src/Client");
 const BaseTextChannel = require("./BaseTextChannel");
 const Channel = require("./Channel");
 const Member = require("./Member");
-const TextChannel = require("./TextChannel");
+const TextChannel = require("./channels/TextChannel");
 const User = require("./User");
 /**
  * @typedef {Object} ApiMessage
@@ -43,10 +43,7 @@ module.exports = class Message {
          * @type {User} Message author
         */
         this.author = new User(client, data.author)
-        /**
-         * @property {(Member|null)} Message member 
-        */
-        this.member = new Member(client, data.member)
+
         /**
          * @type {(Number|null)} Message type
          */
@@ -58,7 +55,7 @@ module.exports = class Message {
         /**
          * @type {Map<String, Reaction>} Message reavctions
          */
-        this.reactions = Map(message.reactions.map(r => [r.emoji.id ?? r.emoji.name, new Reaction(client, r)]))
+        this.reactions = new Map(data.reactions?.map(r => [r.emoji.id ?? r.emoji.name, new Reaction(client, r)]))
         /**
          * @type {Array<Object>} Message components
         */
@@ -71,7 +68,8 @@ module.exports = class Message {
          * @type  {?(Number|String)} Message nonce
          */
         this.nonce = data.nonce ?? null
-
+        this.channelId = data.channel_id
+        this.guildId = data.guild_id
 
 
         /**
@@ -83,13 +81,19 @@ module.exports = class Message {
      * @type { Guild }
      */
     get guild() {
-        return this.client.guilds.get(this.guild_id) ?? this.channel?.guild ?? null;
+        return this.client.guilds.get(this.guildId) ?? this.channel?.guild ?? null;
     }
     /** 
      *  @type { TextChannel } Message's channel
      * */
     get channel(){
-        return this.client.channels.get(this.channel_id)
+        return this.client.channels.get(this.channelId)
+    }
+    /**
+    * @property {(Member|null)} Message member 
+    */
+    get member(){
+            return this.guild?.members.get(this.author.id) ?? null
     }
     async reply(options) {
         if (!this.channel) return Promise.reject(new Error('CHANNEL_NOT_CACHED'));

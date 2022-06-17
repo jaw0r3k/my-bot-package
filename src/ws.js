@@ -37,7 +37,6 @@ module.exports = class WebSocketManager {
     })
     this.ws.on("message", (data) => {
         const pl = JSON.parse(data)
-        console.log(pl)
         const {t, event, op, d} = pl
         if(op === 10){
             const { heartbeat_interval } = d
@@ -45,7 +44,7 @@ module.exports = class WebSocketManager {
         } 
         
         else if(t){
-            if(["READY", "GUILD_CREATE", "GUILD_DELETE", "GUILD_MEMBER_CREATE", "MESSAGE_CREATE", "CHANNEL_CREATE", "CHANNEL_DELETE"].includes(t)){
+            if(["READY", "INTERACTION_CREATE", "GUILD_CREATE", "GUILD_DELETE", "GUILD_MEMBER_CREATE", "MESSAGE_CREATE", "CHANNEL_CREATE", "CHANNEL_DELETE"].includes(t)){
                 require(`../handlers/${t}.js`)(this.client, d, event)
             }
         }

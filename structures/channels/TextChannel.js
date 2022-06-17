@@ -1,6 +1,6 @@
-const BaseTextChannel = require("./BaseTextChannel");
-const Channel = require("./Channel");
-const Guild = require("./Guild");
+const BaseTextChannel = require("../BaseTextChannel");
+const Channel = require("../Channel");
+const Guild = require("../Guild");
 
 module.exports = class TextChannel extends BaseTextChannel{
     constructor(client, data){

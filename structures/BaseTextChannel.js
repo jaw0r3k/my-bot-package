@@ -1,7 +1,6 @@
 const { default: fetch } = require("node-fetch");
 const Channel = require("./Channel");
 const Constants = require("../src/Constants");
-console.log(Channel)
 module.exports = class BaseTextChannel extends Channel {
     constructor(client, data){
         super(client, data);
@@ -28,6 +27,6 @@ module.exports = class BaseTextChannel extends Channel {
             method: "POST",
             body: JSON.stringify(data),
             headers
-        }).then(r => r.json()).then(console.log)
+        })
     }
 }
