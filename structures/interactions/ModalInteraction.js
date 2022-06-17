@@ -4,7 +4,7 @@ const InteractionResponses = require("./InteractionResponses");
 class ModalInteraction extends Interaction{
     constructor(client, data){
         super(client, data)
-        InteractionResponses.applyToClass(ModalInteraction, ["showModal"])
     }
 }
+InteractionResponses.applyToClass(ModalInteraction, ["showModal"])
 module.exports = ModalInteraction

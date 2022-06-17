@@ -1,51 +1,59 @@
-// const TextChannel = require("./channels/TextChannel")
+const Base = require("./Base")
 
-module.exports = class Channel {
-    constructor(client, data){
-        this.client = client
+module.exports = class Channel extends Base {
+  constructor(client, data){
+        super(client)
         /**
-         *  @property {Number} type
+         *  @type {Number} type
          */
         this.type = data.type
-           /**
-         *  @property {String} name
+        /**
+         *  @type {String} name
          */
         this.name = data.name
-           /**
-         *  @property {String} id
+        /**
+         *  @type {String} id
          */
         this.id = data.id
-    }
-       /**
-         *  @returns {BigInt} type
+            /**
+         *  @type {String} Guild Id
          */
-    get createdTimestamp() {
-        return Number(BigInt(this.id) >> 22n) + 1420070400000;
       }
-      static generateChannel(client, data){
-        switch (data.type){
-          case 0:
-            return new TextChannel(client, data)
-          break;
-          case 1:
-              break;
+      /**
+       *  @returns {BigInt} type
+       */
+    get createdTimestamp() {
+      return Number(BigInt(this.id) >> 22n) + 1420070400000;
+    }
+    static generateChannel(client, data){
+      let channel = {}
+      switch (data.type){
+        case 0:
+            const TextChannel = require("./channels/TextChannel")
+            channel = new TextChannel(client, data)
+            break
           case 2:
+            const VoiceChannel = require("./channels/VoiceChannel")
+            channel = new VoiceChannel(client, data)
               break; 
-          case 3:
-              break;
           case 4:
-              break;
+            const CategoryChannel = require("./channels/CategoryChannel")
+            channel = new CategoryChannel(client, data)
+            break
           case 5:
               break;
           case 10:
           case 11:
           case 12:
+            const ThreadChannel = require("./channels/ThreadChannel")
+            channel = new ThreadChannel(client, data)
             break
           case 13:
 
             break;
           default:
               new Channel(client, data)
+        return channel
         }
       }
 }

@@ -6,7 +6,7 @@ const Member = require("./Member");
  * @property {(String|null)} icon
  * @property {String} permissions
  */
-module.exports = class Guild {
+module.exports = class Guild extends Base {
       /**
      * 
      * @param {Client} client 
@@ -14,7 +14,7 @@ module.exports = class Guild {
      */
   //
     constructor(client, data) {
-      this.client = client;
+      super(client)
       /**
        *  @type {String} Id of guild's owner
       */

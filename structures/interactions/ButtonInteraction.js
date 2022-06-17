@@ -9,7 +9,7 @@ class ButtonInteraction extends Interaction {
         this.customId = this.data.custom_id	
         this.componentType = data.data.component_type
         this.message = data.message ? new Message(client, data.message) : null
-        InteractionResponses.applyToClass(ButtonInteraction, [])
     }
 }
+InteractionResponses.applyToClass(ButtonInteraction, [])
 module.exports = ButtonInteraction

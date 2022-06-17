@@ -103,9 +103,10 @@ async deferReply(options = {}) {
 
     return options.fetchReply ? this.fetchReply() : undefined;
   }
+
   async showModal(modal) {
     if (this.deferred || this.replied) throw new Error('INTERACTION_ALREADY_REPLIED');
-
+    
     await fetch(`${Constants.api}/interactions/${this.id}/${this.token}/callback`,{
       method: "POST",
       body: JSON.stringify({ type: 9, data: modal }),

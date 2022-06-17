@@ -1,6 +1,8 @@
 const EventEmitter = require('node:events');
 const WebSocket = require("ws");
+const ChannelsManager = require('../managers/ChannelsManager.js');
 const Channel = require('../structures/Channel.js');
+const ClientApi = require('./api.js');
 const WebSocketManager = require("./ws.js")
  module.exports = class Client extends EventEmitter {
      /**
@@ -10,8 +12,9 @@ const WebSocketManager = require("./ws.js")
     constructor(options){
       super()
       this.guilds = new Map()
-      this.channels = new Map()
+      this.channels = new ChannelsManager(client)
       this.ws = new WebSocketManager(this);
+      this.api = new ClientApi(this)
       this.intents = options || 37377
     }
     async login(token = this.token) {

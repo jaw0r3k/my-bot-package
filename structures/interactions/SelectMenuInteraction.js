@@ -10,7 +10,7 @@ class SelectMenuInteraction extends Interaction {
             this.values = data.data.values
             this.componentType = data.data.component_type
             this.message = data.message ? new Message(client, data.message) : null
-            InteractionResponses.applyToClass(SelectMenuInteraction, [])
+        }
     }
-}
+InteractionResponses.applyToClass(SelectMenuInteraction, [])
 module.exports = SelectMenuInteraction

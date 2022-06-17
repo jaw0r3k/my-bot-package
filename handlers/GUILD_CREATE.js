@@ -6,8 +6,7 @@ module.exports = (client, data) => {
     const guild = new Guild(client, data)
     client.guilds.set(data.id, guild);
     for(const channel of data.channels) {
-        channel.guild_id = data.id
-        client.channels.set(channel.id, new BaseTextChannel(client, channel))
+        client.channels._add(channel, guild)
     }
     if (client.status === "READY") {
         /**

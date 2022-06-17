@@ -1,6 +1,6 @@
-module.exports = class Interaction {
+module.exports = class Interaction extends Base {
     constructor(client, data){
-        this.client = client
+        super(client)
         this.applicationId = data.application_id
         this.id = data.id
         this.channelId = data.channel_id

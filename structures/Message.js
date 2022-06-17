@@ -19,14 +19,14 @@ const User = require("./User");
  * @property {Boolean} tts
  * @property {Boolean} mention_everyone
  */
-module.exports = class Message {
+module.exports = class Message extends Base {
     /**
      * 
      * @param {Client} client 
      * @param {ApiMessage} data 
      */
     constructor(client, data){
-        this.client = client
+        super(client)
         /**
          * @type {(String|null)} Message content
          */

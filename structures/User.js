@@ -1,7 +1,7 @@
-module.exports = class User {
+module.exports = class User extends Base {
     constructor(client, data){
-        this.client = client
-        /**
+        super(client)
+      /**
           * @type {String} Name of user 
         */
         this.username = data.username
@@ -10,7 +10,7 @@ module.exports = class User {
         */
         this.discriminator = data.discriminator
         /**
-         * @type {Boolean} Avatar of user in hash 
+         * @type {{String|null}} Avatar of user in hash 
          */
         this.avatar	= data.avatar ?? null
         /**
@@ -18,7 +18,7 @@ module.exports = class User {
          */
         this.banner = data.banner ?? null
         /**
-         * @type {Boolean} User's accent color 
+         * @type {(Number|null)} User's accent color 
          */
         this.accentColor = data.accent_color ?? null
         /**

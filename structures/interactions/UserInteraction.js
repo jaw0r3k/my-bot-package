@@ -9,7 +9,6 @@ class UserInteraction extends Interaction {
         this.options = data.options
         this.targetId = data.data.target_id;
         this.commandName = this.data.name	
-        InteractionResponses.applyToClass(UserInteraction, ["deferUpdate", "update"])
     }
     get user(){
         return new User(client, Object.entries(this.options.users)[0][1])
@@ -18,4 +17,5 @@ class UserInteraction extends Interaction {
         return new Member(client, Object.entries(this.options.members)[0][1])
     }
 }
+InteractionResponses.applyToClass(UserInteraction, ["deferUpdate", "update"])
 module.exports = UserInteraction
