@@ -1,3 +1,5 @@
+const Base = require("./Base")
+
 module.exports = class User extends Base {
     constructor(client, data){
         super(client)

@@ -1,6 +1,8 @@
+const Channel = require("./Channel");
 const Guild = require("./Guild")
 module.exports = class GuildChannel extends Channel {
     constructor(client, data){
+        super(client, data)
         /**
          * @type {String}
          */

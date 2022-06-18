@@ -1,8 +1,3 @@
-'use strict';
-
-const BaseManager = require('./BaseManager');
-const { Error } = require('../errors');
-
 /**
  * Manages the API methods of a data model along with a collection of instances.
  * @extends {BaseManager}

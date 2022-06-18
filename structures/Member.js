@@ -1,12 +1,14 @@
+const Base = require("./Base")
 const Role = require("./Role")
 const User = require("./User")
 
 module.exports = class Member extends Base {
-  constructor(client, data){
+  constructor(client, data, guild){
     super(client)
+    this.guild = guild
     /**
-          * @type {User} User of member
-        */
+      * @type {User} User of member
+    */
     this.user = data.user ? new User(client, data.user) : null
     /**
       * @type {(String|null)} NIckname of member

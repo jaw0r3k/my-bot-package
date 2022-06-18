@@ -4,6 +4,7 @@ const Channel = require("./Channel");
 const Member = require("./Member");
 const TextChannel = require("./channels/TextChannel");
 const User = require("./User");
+const Base = require("./Base");
 /**
  * @typedef {Object} ApiMessage
  * @property
@@ -87,7 +88,7 @@ module.exports = class Message extends Base {
      *  @type { TextChannel } Message's channel
      * */
     get channel(){
-        return this.client.channels.get(this.channelId)
+        return this.client.channels.cache.get(this.channelId)
     }
     /**
     * @property {(Member|null)} Message member 

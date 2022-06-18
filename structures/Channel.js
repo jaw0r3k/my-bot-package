@@ -27,10 +27,12 @@ module.exports = class Channel extends Base {
     }
     static generateChannel(client, data){
       let channel = {}
+      console.log(data.type)
       switch (data.type){
         case 0:
             const TextChannel = require("./channels/TextChannel")
             channel = new TextChannel(client, data)
+            // console.log(channel)
             break
           case 2:
             const VoiceChannel = require("./channels/VoiceChannel")
@@ -49,11 +51,11 @@ module.exports = class Channel extends Base {
             channel = new ThreadChannel(client, data)
             break
           case 13:
-
             break;
           default:
               new Channel(client, data)
-        return channel
-        }
+              break
+            }
+    return channel
       }
 }

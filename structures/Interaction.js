@@ -1,3 +1,4 @@
+const Base = require("./Base")
 module.exports = class Interaction extends Base {
     constructor(client, data){
         super(client)
@@ -25,14 +26,17 @@ module.exports = class Interaction extends Base {
             case 2: {
                 switch (data.data.type) {
                     case 1: {
+                        const Commandnteraction = require("./interactions/CommandInteraction")
                         interaction = new Commandnteraction(client, data)
                         break
                     }
                     case 2: {
+                        const UserInteraction = require("./interactions/UserInteraction")
                         interaction = new UserInteraction(client, data)
                         break
                     }
                     case 3: {
+                        const MessageInteraction = require("./interactions/MessageInteraction")
                         interaction = new MessageInteraction(client, data)
                         break
                     }
@@ -41,10 +45,12 @@ module.exports = class Interaction extends Base {
             case 3: {
                 switch (data.data.component_type) {
                     case 2: {
+                        const ButtonInteraction = require("./interactions/ButtonInteraction")
                         interaction = new ButtonInteraction(client, data)
                         break
                     } 
                     case 3: { 
+                        const SelectMenuInteraction = require("./interactions/SelectMenuInteraction")
                         interaction = new SelectMenuInteraction(client, data)
                         break
                     }
@@ -52,6 +58,7 @@ module.exports = class Interaction extends Base {
                 break
             }
             case 4: {
+                const AutoCompleteInteraction = require("./interactions/AutoCompleteInteraction")
                 interaction = new AutoCompleteInteraction(client, data)
                 break
             }
@@ -66,9 +73,5 @@ module.exports = class Interaction extends Base {
         return Util.flatten(this, ...props);
       }
 }
-const AutoCompleteInteraction = require("./interactions/AutoCompleteInteraction")
-const ButtonInteraction = require("./interactions/ButtonInteraction")
-const Commandnteraction = require("./interactions/CommandInteraction")
-const UserInteraction = require("./interactions/UserInteraction")
 const Member = require("./Member")
 const User = require("./User")

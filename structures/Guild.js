@@ -1,3 +1,5 @@
+const MembersManager = require("../managers/MembersManager");
+const Base = require("./Base");
 const Channel = require("./Channel");
 const Member = require("./Member");
 /**
@@ -24,10 +26,12 @@ module.exports = class Guild extends Base {
       */
       this.icon = data.icon ?? null
 
-      this.members = new Map(
-        data.members.map((member) => {
-          return [member.id, new Member(client, member)];
-        }));
+      this.members = new MembersManager(this.client, this, data.members)
+      
+      // Map(
+      //   data.members.map((member) => {
+      //     return [member.id, new Member(client, member)];
+      //   }));
       this.channels = new Map(
         data.channels.map((channel) => {
           return [channel.id, new Channel(client, channel)];

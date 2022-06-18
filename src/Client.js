@@ -12,7 +12,7 @@ const WebSocketManager = require("./ws.js")
     constructor(options){
       super()
       this.guilds = new Map()
-      this.channels = new ChannelsManager(client)
+      this.channels = new ChannelsManager(this)
       this.ws = new WebSocketManager(this);
       this.api = new ClientApi(this)
       this.intents = options || 37377

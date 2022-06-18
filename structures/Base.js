@@ -1,6 +1,5 @@
 'use strict';
 
-const Util = require('../util/Util');
 
 /**
  * Lol definitely not copied from djs
@@ -25,7 +24,7 @@ class Base {
   }
 
   toJSON(...props) {
-    return Util.flatten(this, ...props);
+    return this //Util.flatten(this, ...props);
   }
 
   valueOf() {

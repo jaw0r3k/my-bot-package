@@ -12,7 +12,10 @@ module.exports = class ClientApi {
                 "Content-Type": "application/json"
             }
           }
-        if(data) options.data = JSON.stringify(data)
+        if(data){
+            if(data.reason) options.headers["X-Audit-Log-Reason"] = data.reason
+            options.data = JSON.stringify(data)
+        }
         return await fetch(`${Constants.api}/${end}`, options)
     }
 }
