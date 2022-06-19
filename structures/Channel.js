@@ -27,12 +27,10 @@ module.exports = class Channel extends Base {
     }
     static generateChannel(client, data){
       let channel = {}
-      console.log(data.type)
       switch (data.type){
         case 0:
             const TextChannel = require("./channels/TextChannel")
             channel = new TextChannel(client, data)
-            // console.log(channel)
             break
           case 2:
             const VoiceChannel = require("./channels/VoiceChannel")

@@ -2,7 +2,7 @@ import { EventEmitter } from "node:events";
 export type Awaitable<T> = T | PromiseLike<T>;
 export type If<T extends boolean, A, B = null> = T extends true ? A : T extends false ? B : A | B;
 export class Client<Ready extends boolean = boolean> extends EventEmitter {
-    public constructor(options: Object);
+    public constructor(options: ClientOptions);
     public user: If<Ready, User>
     public channels: Map<String, Channel>
     public guilds: Map<String, Guild>
@@ -30,6 +30,10 @@ export class Client<Ready extends boolean = boolean> extends EventEmitter {
   
     public removeAllListeners<K extends keyof ClientEvents>(event?: K): this;
     public removeAllListeners<S extends string | symbol>(event?: Exclude<S, keyof ClientEvents>): this;
+}
+export interface ClientOptions {
+    intents: number
+    waitTimeout: number 
 }
 export interface ClientEvents {
     ready: [client: Client]

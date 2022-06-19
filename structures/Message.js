@@ -7,13 +7,8 @@ const User = require("./User");
 const Base = require("./Base");
 /**
  * @typedef {Object} ApiMessage
- * @property
- * @property {Object} message_reference
- * @property {Number} flags
- * @property {String} application_id
- * @property {?Object} interaction
  * @property {?Object} thread
- * @property {?Array<Object>} sticker_items
+ * @property 
  * @property {?Array<Object>} stickers
  * @property {String} channel_id
  * @property {?String} guild_id
@@ -29,46 +24,9 @@ module.exports = class Message extends Base {
     constructor(client, data){
         super(client)
         /**
-         * @type {(String|null)} Message content
-         */
-        this.content = data.content ?? null
-        /**
-         * @type {(Array<Object>|null)} Message attachments
-        */
-        this.attachments = data.attachments ?? null
-        /**
-         * @type {(Array<Object>|null)} Message embeds
-        */
-        this.embeds = data.embeds ?? null
-        /**
-         * @type {User} Message author
-        */
-        this.author = new User(client, data.author)
-
-        /**
-         * @type {(Number|null)} Message type
-         */
-        this.type = data.type ?? null
-        /**
          * @type {String} Message ID
          */
         this.id = data.id
-        /**
-         * @type {Map<String, Reaction>} Message reavctions
-         */
-        this.reactions = new Map(data.reactions?.map(r => [r.emoji.id ?? r.emoji.name, new Reaction(client, r)]))
-        /**
-         * @type {Array<Object>} Message components
-        */
-        this.components = data.components ?? null //[]
-        /**
-         * @type {Boolean} If message is pinned 
-        */
-        this.pinned = data.pinned ?? false
-        /**
-         * @type  {?(Number|String)} Message nonce
-         */
-        this.nonce = data.nonce ?? null
         this.channelId = data.channel_id
         this.guildId = data.guild_id
 
@@ -77,12 +35,77 @@ module.exports = class Message extends Base {
          * @deprecated
          */
         this.stickets = data.stickets
+        this._patch(data)
+    }
+    _patch(data){
+             /**
+         * @type {(String|null)} Message content
+         */
+              this.content = data.content ?? null
+              /**
+               * @type {(Array<Object>|null)} Message attachments
+              */
+              this.attachments = data.attachments ?? null
+              /**
+               * @type {(Array<Object>|null)} Message embeds
+              */
+              this.embeds = data.embeds ?? null
+              /**
+               * @type {User} Message author
+              */
+              this.author = new User(this.client, data.author)
+      
+              /**
+               * @type {(Number|null)} Message type
+               */
+              this.type = data.type ?? null
+              /**
+               * @type {Map<String, Reaction>} Message reavctions
+               */
+              this.reactions = new Map(data.reactions?.map(r => [r.emoji.id ?? r.emoji.name, new Reaction(client, r)]))
+              /**
+               * @type {Array<Object>} Message components
+              */
+              this.components = data.components ?? null //[]
+              /**
+               * @type {Boolean} If message is pinned 
+              */
+              this.pinned = data.pinned ?? false
+              /**
+               * @type  {?(Number|String)} Message nonce
+               */
+              this.nonce = data.nonce ?? null
+                /**
+                 * Message reference (**Reply of message**)
+               * @type {?(Number|String)} 
+               */
+              this.messageReference = data.message_reference ?? null
+              /**
+                * @type {Number} Message flags
+              */
+              this.flags = data.flags ?? 0
+              /**
+                * @type {(Object|null)} Message interaction
+              */
+              this.interaction = data.interaction ?? null
+                /**
+                *  @type {(String|null)} Message webhook ID
+              */
+              this.webhookId = data.webhook_id ?? null
+              /**
+                *  @type {(String|null)} ID of owner of message webhook
+              */
+             this.applicationId = data.application_id ?? null
+              /**
+               * @type{?Array<Object>} sticker_items
+             */
+              this.stickerItems = data.sticker_items ?? []
     }
     /**
      * @type { Guild }
      */
     get guild() {
-        return this.client.guilds.get(this.guildId) ?? this.channel?.guild ?? null;
+        return this.client.guilds.cache.get(this.guildId) ?? this.channel?.guild ?? null;
     }
     /** 
      *  @type { TextChannel } Message's channel
@@ -94,7 +117,7 @@ module.exports = class Message extends Base {
     * @property {(Member|null)} Message member 
     */
     get member(){
-            return this.guild?.members.get(this.author.id) ?? null
+            return this.guild?.members.cache.get(this.author.id) ?? null
     }
     async reply(options) {
         if (!this.channel) return Promise.reject(new Error('CHANNEL_NOT_CACHED'));

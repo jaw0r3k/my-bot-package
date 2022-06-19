@@ -13,7 +13,7 @@ module.exports = class MessagesManager extends CachedManager {
           return existing;
         }
         
-        const message = new Message(data)
+        const message = new Message(this.client, data)
     
         if (!message) {
           return null;
@@ -24,7 +24,7 @@ module.exports = class MessagesManager extends CachedManager {
         return message;
       }
       async fetchPinned(cache = true) {
-        const data = await this.client.api.endpoint(`channels${this.channel.id}/pins`)
+        const data = await this.client.api.endpoint(`channels/${this.channel.id}/pins`)
         
         return new Map(data.map(m => [m.id, this._add(m, { cache })]));
       }

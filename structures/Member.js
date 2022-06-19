@@ -9,7 +9,10 @@ module.exports = class Member extends Base {
     /**
       * @type {User} User of member
     */
-    this.user = data.user ? new User(client, data.user) : null
+   this._patch(data)
+  }
+  _patch(data){
+     this.user = data.user ? new User(this.client, data.user) : null
     /**
       * @type {(String|null)} NIckname of member
     */
@@ -24,7 +27,7 @@ module.exports = class Member extends Base {
     */
     this.roles = new Map(
         data.roles.map(role => {
-            return [role.id, new Role(client, role)]
+            return [role.id, new Role(this.client, role)]
         }))
     /**
      * @type {Data} When the user joined the guild

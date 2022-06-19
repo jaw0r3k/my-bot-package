@@ -2,9 +2,8 @@ const Guild = require("../structures/Guild");
 
 module.exports = (client, data) => {
     if(!data.guild_id) return
-    const guild = client.guilds.get(data.guild_id)
+    const guild = client.guilds.cache.get(data.guild_id)
     client.channels._add(channel, guild)
-    client.channels.set(data.id, channel)
     /**
          * Emitted whenever the client joins a guild.
          * @event Client#guildCreate

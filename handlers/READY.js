@@ -8,5 +8,5 @@ module.exports = (client, data) => {
         client.status = "READY"
         client.emit("ready", client)
         }
-    }, (client.intents & 1) === 1 ? client.guildWitTimeout ?? 15000 : 0)
+    }, (client.intents & 1) === 1 ? client.waitTimeout ?? 15000 : 0)
 }

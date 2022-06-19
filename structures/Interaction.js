@@ -1,4 +1,5 @@
 const Base = require("./Base")
+const User = require("./User")
 module.exports = class Interaction extends Base {
     constructor(client, data){
         super(client)
@@ -10,12 +11,12 @@ module.exports = class Interaction extends Base {
         Object.defineProperty(this, 'token', { value: data.token });
         this.version = data.version
         this.user = new User(client, data.user ?? data.member.user)
-        this.member = new Member(client, data.member) ?? null
+        this.member = this.guild.members._add(data.member)
         this.locale = data.locale ?? null;
         this.guildLocale = data.guild_locale ?? null;
     } 
     get guild() {
-        return this.client.guilds.get(this.guildId)
+        return this.client.guilds.cache.get(this.guildId)
     }
     get channel() {
         return this.client.channels.get(this.channelId)
@@ -73,5 +74,3 @@ module.exports = class Interaction extends Base {
         return Util.flatten(this, ...props);
       }
 }
-const Member = require("./Member")
-const User = require("./User")

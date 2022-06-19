@@ -1,9 +1,10 @@
-const Guild = require("../structures/Guild");
+const Channel = require("../structures/Channel");
+const User = require("../structures/User");
 const CachedManager = require("./CachedManager");
 
-module.exports = class GuildsManager extends CachedManager {
+module.exports = class UsersManager extends CachedManager {
     constructor(client){
-       super(client, Guild)
+       super(client, User)
 
     }
     _add(data, { cache = true } = {}) {
@@ -13,15 +14,15 @@ module.exports = class GuildsManager extends CachedManager {
           return existing;
         }
         
-        const guild = new Guild(this.client, data);
+        const user = new User(this.client, data);
     
-        if (!guild) {
+        if (!user) {
           return null;
         }
     
-        if (cache) this.cache.set(guild.id, guild);
+        if (cache) this.cache.set(channel.id, channel);
     
-        return guild;
+        return user;
       }
     /**
      * 
@@ -35,7 +36,7 @@ module.exports = class GuildsManager extends CachedManager {
           if (existing) return existing;
         }
     
-        const data = await this.client.api.endpoint(`guilds/${id}`)
+        const data = await this.client.api.endpoint(`users/${id}`)
         return this._add(data, { cache });
       }
 }
