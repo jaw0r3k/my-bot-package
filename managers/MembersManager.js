@@ -31,6 +31,7 @@ module.exports = class MembersManager extends CachedManager {
     
         return member;
       }
+       // TODO: Add prune, list, search, and it obvius memberChunkUpdate
       async edit(member, data, reason){
         member = this.resolve(member)
         data.roles &&= data.roles.map(role => (role instanceof Role ? role.id : role));
@@ -50,7 +51,7 @@ module.exports = class MembersManager extends CachedManager {
       }
       async kick(member, reason){
         member = this.resolveId(member)
-        await this.client.api.endpoint(`guild/${this.guild.id}/members/${member}`, "DELETE", { reason })
+        await this.client.api.endpoint(`guilds/${this.guild.id}/members/${member}`, "DELETE", { reason })
       }
       async fetch(id, { cache = true, force = false } = {}) {
         if(typeof id === "string"){
@@ -63,7 +64,7 @@ module.exports = class MembersManager extends CachedManager {
           const data = await this.client.api.endpoint(`guilds/${this.guild.id}/members/${id}`)
           return this._add(data, { cache });
         } else {
-          const data = await this.client.api.endpoint(`guilds/${this.guild.id}/members`)
+          const data = await this.client.api.endpoint(`guilds/${this.guild.id}/members`) // TODO: Fix it
           return data
         }
         }

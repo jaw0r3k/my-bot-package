@@ -1,6 +1,6 @@
 const { default: fetch } = require("node-fetch");
 const Constants = require("./Constants");
-
+// TODO: Do it more usful 
 module.exports = class ClientApi {
     constructor(client){
         this.client = client
@@ -17,6 +17,8 @@ module.exports = class ClientApi {
             if(data.reason){ options.headers["X-Audit-Log-Reason"] = data.reason; delete data.reason }
             options.body = JSON.stringify(data)
         }
-        return await (await fetch(`${Constants.api}/${end}`, options)).json()
+        const response = await fetch(`${Constants.api}/${end}`, options)
+        if(response.status === 204) return null
+        return await(response).json()
     }
 }

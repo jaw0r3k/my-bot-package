@@ -32,7 +32,7 @@ class CachedManager extends DataManager {
       return clone;
     }
 
-    const entry = this.holds && !( data instanceof this.holds) ? new this.holds(this.client, data, ...extras) : data;
+    const entry = this.holds && !(data instanceof this.holds) ? new this.holds(this.client, data, ...extras) : data;
     if (cache) this._cache.set(id ?? entry.id, entry);
     return entry;
   }
