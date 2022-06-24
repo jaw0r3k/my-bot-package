@@ -1,7 +1,8 @@
-const User = require("../structures/User");
+const ClientUser = require("../structures/ClientUser");
 
 module.exports = (client, data) => {
-    client.user = new User(client, data.user);
+    client.application = data.application
+    client.user = new ClientUser(client, data.user);
     client.expectedGuilds = data.guilds
     setTimeout(() => {
         if(client.status !== "READY"){

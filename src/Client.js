@@ -1,5 +1,6 @@
 const EventEmitter = require('node:events');
 const ChannelsManager = require('../managers/ChannelsManager.js');
+const CommandManager = require('../managers/CommandManager.js');
 const GuildsManager = require('../managers/GuildsManager.js');
 const UsersManager = require('../managers/UserManager.js');
 const ClientApi = require('./api.js');
@@ -13,6 +14,8 @@ const WebSocketManager = require("./ws.js")
       this.guilds = new GuildsManager()
       this.channels = new ChannelsManager(this)
       this.users = new UsersManager(this)
+      this.user = null
+      this.commands = new CommandManager(this)
       this.ws = new WebSocketManager(this);
       this.api = new ClientApi(this)
       this.intents = options.intents || 37377

@@ -3,38 +3,49 @@ const MembersManager = require("../managers/MembersManager");
 const RolesManager = require("../managers/RolesManager");
 const Base = require("./Base");
 const Channel = require("./Channel");
-const Member = require("./Member");
-// /**
-//  * @typedef {Object} ApiGuild
-//  * @property {String} id
-//  * @property {(String|null)} icon
-//  * @property {String} permissions
-//  */
 module.exports = class Guild extends Base {
     constructor(client, data) {
       super(client)
       this.id = data.id
-      /**
-       *  @type {String} Id of guild's owner
-      */
-      this.ownerId = data.owner_id 
-      /**
-       *  @type {String} Icon of guild in hash
-      */
-      this.icon = data.icon ?? null
-
+      
       this.members = new MembersManager(this.client, this, data.members)
       this.channels = new Map(
         data.channels.map((channel) => {
           return [channel.id, new Channel(client, channel)];
         }));
-      this.bans = new BansManager(this.client, this, data.bans)
-      this.roles = new RolesManager(this.client, this, data.roles)
-      this.emojis = new Map(
-        data.emojis.map((emoji) => {
-          return [emoji.id, emoji];
-        }))   
-       }
+        this.bans = new BansManager(this.client, this, data.bans)
+        this.roles = new RolesManager(this.client, this, data.roles)
+        this.emojis = new Map(
+          data.emojis.map((emoji) => {
+            return [emoji.id, emoji];
+          }))   
+          this._patch(data)
+        }
+        _patch(data){
+          this.description = data.description ?? null
+          this.permissions = data.permissions
+          this.features = data.features ?? []
+          this.mfaLevel = data.mfa_level
+          this.systemChannelId = data.system_channel_id ?? null
+          this.systemChannelFlags = data.system_channel_flags
+          this.explicitContentFilter = data.explicit_content_filter
+          this.defaultMessageNotifications = data.default_message_notifications
+          this.verificationLevel = data.verification_level
+          /**
+           *  @type {String} Id of guild's owner
+           */
+          this.ownerId = data.owner_id 
+          /**
+           *  @type {String} Icon of guild in hash
+           */
+          this.icon = data.icon ?? null
+          this.banner = data.banner ?? null
+          this.premiumTier = data.premium_tier
+          this.premiumSubscriptionCount = data.premium_subscription_count ?? 0
+          this.preferredLocale = data.preferred_locale
+          this.stickers = data.stickers ?? []
+          this.nsfwLevel = data.nsfw_level
+        }
     get createdTimestamp() {
       return Number(BigInt(this.id) >> 22n) + 1420070400000;
     }

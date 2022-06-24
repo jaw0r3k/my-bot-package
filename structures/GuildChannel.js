@@ -10,6 +10,9 @@ module.exports = class GuildChannel extends Channel {
         /**
          * @type {Number}
          */
+        this._patch(data)
+    }
+        _patch(data){
         this.position = data.position
         /**
          * @type {String}

@@ -17,6 +17,7 @@ module.exports = class ClientApi {
             if(data.reason){ options.headers["X-Audit-Log-Reason"] = data.reason; delete data.reason }
             options.body = JSON.stringify(data)
         }
+        console.log(options)
         const response = await fetch(`${Constants.api}/${end}`, options)
         if(response.status === 204) return null
         return await(response).json()

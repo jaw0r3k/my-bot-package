@@ -11,7 +11,7 @@ module.exports = class Interaction extends Base {
         Object.defineProperty(this, 'token', { value: data.token });
         this.version = data.version
         this.user = new User(client, data.user ?? data.member.user)
-        this.member = this.guild.members._add(data.member)
+        this.member = this.guild?.members._add(data.member)
         this.locale = data.locale ?? null;
         this.guildLocale = data.guild_locale ?? null;
     } 
