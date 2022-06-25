@@ -32,7 +32,7 @@ module.exports = class MessagesManager extends CachedManager {
         const messageId = this.resolveId(message);
         if (!messageId) throw new TypeError('INVALID_TYPE', 'message', 'MessageResolvable');
     
-        const data = await this.client.api.endpoint(`/channels/${this.channel.id}/messages/${messageId}`, "PATCH", options)
+        const data = await this.client.api.endpoint(`/channels/${this.channel.id}/messages/${messageId}`, "PATCH", { data: options })
     
         const existing = this.cache.get(messageId);
         if (existing) {

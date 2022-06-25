@@ -53,6 +53,6 @@ module.exports = class RolesManager extends CachedManager {
       role = this.resolveId(role)
       if (!role) throw new TypeError('INVALID_TYPE', 'role', 'RoleResolvable');
       if(typeof position !== "number") throw new Error("INVALID_TYPE", "position", "number") 
-      this.client.api.endpoint(`guilds/${this.guild.id}/roles/`, "PATCH", { id: id, position, reason })
+      this.client.api.endpoint(`guilds/${this.guild.id}/roles/`, "PATCH", { data: { id: id, position, reason }})
     }
 }

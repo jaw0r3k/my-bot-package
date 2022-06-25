@@ -16,7 +16,7 @@ module.exports = class ClientUser extends User {
           }))
         }
         async edit(data){
-          await this.client.api.endpoint(`users/@me`, "PATCH", data)
+          await this.client.api.endpoint(`users/@me`, "PATCH", { data })
           return this
         }
         setUsername(username) {

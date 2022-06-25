@@ -22,6 +22,6 @@ module.exports = class BaseTextChannel extends GuildChannel {
         this.nsfw = data.nsfw
     }
     async send(data){
-        await this.client.api.endpoint(`channels/${this.id}/messages`, "POST", data)
+        await this.client.api.endpoint(`channels/${this.id}/messages`, "POST", { data })
     }
 }

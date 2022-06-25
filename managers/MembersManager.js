@@ -38,7 +38,7 @@ module.exports = class MembersManager extends CachedManager {
 
         data.communication_disabled_until =
         data.communicationDisabledUntil && new Date(data.communicationDisabledUntil).toISOString();
-        member = await this.client.api.endpoint(`/guilds/${this.guild.id}/members/${member.id}`, "PATCH", { ...data, reason})
+        member = await this.client.api.endpoint(`/guilds/${this.guild.id}/members/${member.id}`, "PATCH", { data, reason})
         this._add(member)
       }
       async ban(member, reason){
