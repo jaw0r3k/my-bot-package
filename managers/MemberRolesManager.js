@@ -1,7 +1,7 @@
 const Role = require("../structures/Role");
 const CachedManager = require("./CachedManager");
 
-module.exports = class MemberRolessManager extends CachedManager {
+module.exports = class MemberRolesManager extends CachedManager {
     constructor(client, member, roles){
         super(client, Role)
         this.member = member

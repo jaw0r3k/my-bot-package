@@ -1,18 +1,18 @@
+const MemberRolesManager = require("../managers/MemberRolesManager")
 const Base = require("./Base")
-const Role = require("./Role")
 const User = require("./User")
 
 module.exports = class Member extends Base {
   constructor(client, data, guild){
     super(client)
     this.guild = guild
+    this._patch(data)
+  }
+  _patch(data){
     /**
       * @type {User} User of member
     */
-   this._patch(data)
-  }
-  _patch(data){
-     this.user = data.user ? new User(this.client, data.user) : null
+     this.user = this.client.users._add(data.user)
     /**
       * @type {(String|null)} NIckname of member
     */
@@ -23,12 +23,9 @@ module.exports = class Member extends Base {
     */
     this.avatar = data.avatar
     /**
-     * @type {Map<String, Role} Member roles
+     * @type {MemberRolesManager} Member roles
     */
-    this.roles = new Map(
-        data.roles.map(role => {
-            return [role.id, new Role(this.client, role)]
-        }))
+    this.roles = new MemberRolesManager(this.client, this, data.roles)
     /**
      * @type {Data} When the user joined the guild
     */
