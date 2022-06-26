@@ -5,6 +5,7 @@ const Member = require("./Member");
 const TextChannel = require("./channels/TextChannel");
 const User = require("./User");
 const Base = require("./Base");
+const Collection = require("./Collection");
 /**
  * @typedef {Object} ApiMessage
  * @property {?Object} thread
@@ -60,9 +61,9 @@ module.exports = class Message extends Base {
                */
               this.type = data.type ?? null
               /**
-               * @type {Map<String, Reaction>} Message reavctions
+               * @type {Collection<String, Reaction>} Message reavctions
                */
-              this.reactions = new Map(data.reactions?.map(r => [r.emoji.id ?? r.emoji.name, new Reaction(client, r)]))
+              this.reactions = new Collection(data.reactions?.map(r => [r.emoji.id ?? r.emoji.name, new Reaction(client, r)]))
               /**
                * @type {Array<Object>} Message components
               */

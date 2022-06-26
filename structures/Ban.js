@@ -1,10 +1,10 @@
 const Base = require("./Base")
 
 module.exports = class Ban extends Base {
-    constructor(client, ban, guild){
+    constructor(client, data, guild){
         super(client)
         this.guild = guild
-        this.user = this.client.users._add(ban.user)
+        this.user = this.client.users._add(data.user)
         this.reason = data.reason ?? null
     }
 }

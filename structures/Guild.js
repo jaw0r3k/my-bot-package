@@ -3,19 +3,20 @@ const MembersManager = require("../managers/MembersManager");
 const RolesManager = require("../managers/RolesManager");
 const Base = require("./Base");
 const Channel = require("./Channel");
+const Collection = require("./Collection");
 module.exports = class Guild extends Base {
     constructor(client, data) {
       super(client)
       this.id = data.id
       
       this.members = new MembersManager(this.client, this, data.members)
-      this.channels = new Map(
+      this.channels = new Collection(
         data.channels.map((channel) => {
           return [channel.id, new Channel(client, channel)];
         }));
         this.bans = new BansManager(this.client, this, data.bans)
         this.roles = new RolesManager(this.client, this, data.roles)
-        this.emojis = new Map(
+        this.emojis = new Collection(
           data.emojis.map((emoji) => {
             return [emoji.id, emoji];
           }))   

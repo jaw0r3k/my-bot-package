@@ -3,10 +3,10 @@ const GuildChannel = require("./GuildChannel");
 module.exports = class BaseTextChannel extends GuildChannel {
     constructor(client, data){
         super(client, data);
-        /**
-         * @type {?Map}
-         */
         const MessagesManager = require("../managers/MessagesManager");
+        /**
+         * @type {?MessagesManager}
+         */
         this.messages = new MessagesManager(client, this)
         /**
          * @type {?String}

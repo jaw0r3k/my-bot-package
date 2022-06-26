@@ -1,3 +1,4 @@
+const Collection = require("../structures/Collection");
 const Message = require("../structures/Message");
 const CachedManager = require("./CachedManager");
 
@@ -88,7 +89,7 @@ module.exports = class MessagesManager extends CachedManager {
             return this._add(data, { cache });
         } else if(typeof message === "object") {
             const data = await this.client.api.endpoint(`/channels/${this.channel.id}/messages?` + new URLSearchParams(message))
-            return new Map(data.map(m => [m.id, this._add(m, { cache })]))
+            return new Collection(data.map(m => [m.id, this._add(m, { cache })]))
         } else if(typeof message === "number"){
             return this.fetch({ limit: message })
         } else {

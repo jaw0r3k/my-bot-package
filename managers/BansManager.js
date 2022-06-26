@@ -1,4 +1,5 @@
 const Ban = require("../structures/Ban");
+const Collection = require("../structures/Collection");
 const CachedManager = require("./CachedManager");
 
 module.exports = class BansManager extends CachedManager {
@@ -13,7 +14,7 @@ module.exports = class BansManager extends CachedManager {
           return existing;
         }
         
-        const ban = new Ban(this.client, data. this.guild);
+        const ban = new Ban(this.client, data, this.guild);
     
         if (!ban) {
           return null;
@@ -37,15 +38,15 @@ module.exports = class BansManager extends CachedManager {
       async create(user, reason){
         user = this.client.users.resolveId(user)
         if(!user) throw new Error("INVALID_TYPE", "user", "UserResolvable")
-        console.log(await this.client.api.endpoint(`guilds/${this.guild.id}/bans/${user}`, "PUT", { reason }))
+        await this.client.api.endpoint(`guilds/${this.guild.id}/bans/${user}`, "PUT", { reason })
       }    
       async remove(user, reason){
         user = this.client.users.resolveId(user)
         if(!user) throw new Error("INVALID_TYPE", "user", "UserResolvable")
         await this.client.api.endpoint(`guilds/${this.guild.id}/bans/${user}`, "DELETE", { reason })
       }
-      async fetch(userOrOptions, {cache = true, force = false}) {
-        if(typeof userOrOptions === "undefined") this._fetchMany()
+      async fetch(userOrOptions, {cache = true, force = false} = {}) {
+        if(typeof userOrOptions === "undefined") return this._fetchMany()
         const user = this.client.users.resolveId(userOrOptions)
         if(user){
 
@@ -63,8 +64,8 @@ module.exports = class BansManager extends CachedManager {
           return this._fetchMany(userOrOptions)
         }
       }
-     async _fetchMany(options){
-        const data = await this.client.api.endpoint(`guilds/${guild.id}/bans?` + new URLSearchParams(options))
-        return new Map(data.map(b => [b.user.id, this._add(b, { cache: options.cache })]))
+     async _fetchMany(options={}){
+        const data = await this.client.api.endpoint(`guilds/${this.guild.id}/bans?` + new URLSearchParams(options))
+        return new Collection(data.map(b => [b.user.id, this._add(b, { cache: options.cache })]))
       }
 }
