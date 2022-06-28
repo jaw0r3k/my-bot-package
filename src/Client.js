@@ -3,6 +3,7 @@ const ChannelsManager = require('../managers/ChannelsManager.js');
 const CommandManager = require('../managers/CommandManager.js');
 const GuildsManager = require('../managers/GuildsManager.js');
 const UsersManager = require('../managers/UserManager.js');
+const Intents = require('../utils/Intents.js');
 const ClientApi = require('./api.js');
 const WebSocketManager = require("./ws.js")
  module.exports = class Client extends EventEmitter {
@@ -18,7 +19,7 @@ const WebSocketManager = require("./ws.js")
       this.commands = new CommandManager(this)
       this.ws = new WebSocketManager(this);
       this.api = new ClientApi(this)
-      this.intents = options.intents || 37377
+      this.intents = new Intents(options.intents)
     }
     async login(token = this.token) {
       if (!token || typeof token !== 'string') throw new Error('TOKEN_INVALID');

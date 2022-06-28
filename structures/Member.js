@@ -1,4 +1,5 @@
 const MemberRolesManager = require("../managers/MemberRolesManager")
+const Permissions = require("../utils/Permissions")
 const Base = require("./Base")
 const User = require("./User")
 
@@ -41,7 +42,7 @@ module.exports = class Member extends Base {
     /**
      * @type {String} Permissions of member
     */
-    this.permissions = data.permissions
+    this.permissions = new Permissions(data.permissions)
     /**
      * @type {(Data|null)} When member`s timeout will expire
      */

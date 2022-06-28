@@ -1,3 +1,4 @@
+const Permissions = require("../utils/Permissions")
 const Base = require("./Base")
 
 module.exports = class Role extends Base {
@@ -12,7 +13,7 @@ module.exports = class Role extends Base {
         this.hoist = data.hoist
         this.mentionable = data.mentionable
         this.position = data.position
-        this.permissions = data.permissions
+        this.permissions = new Permissions(data.permissions)
         this.icon = data.icon ?? null
         this.tags = new RoleTags(data.tags)
         this.unicodeEmoji = data.unicode_emoji ?? null

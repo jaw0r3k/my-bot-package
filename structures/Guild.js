@@ -4,6 +4,7 @@ const RolesManager = require("../managers/RolesManager");
 const Base = require("./Base");
 const Channel = require("./Channel");
 const Collection = require("./Collection");
+const Permissions = require("../utils/Permissions")
 module.exports = class Guild extends Base {
     constructor(client, data) {
       super(client)
@@ -24,7 +25,7 @@ module.exports = class Guild extends Base {
         }
         _patch(data){
           this.description = data.description ?? null
-          this.permissions = data.permissions
+          this.permissions = new Permissions(data.permissions)
           this.features = data.features ?? []
           this.mfaLevel = data.mfa_level
           this.systemChannelId = data.system_channel_id ?? null

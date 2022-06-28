@@ -25,5 +25,8 @@ class DataManager {
     return this.cache;
   }
 }
-
+export abstract class CachedManager<K, Holds, R> extends DataManager<K, Holds, R> {
+  protected constructor(client: Client, holds: Constructable<Holds>);
+  private _add(data: unknown, cache?: boolean, { id, extras }?: { id: K; extras: unknown[] }): Holds;
+}
 module.exports = DataManager;

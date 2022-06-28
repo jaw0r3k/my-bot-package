@@ -1,6 +1,6 @@
 const Role = require("../structures/Role")
 const CachedManager = require("./CachedManager")
-
+const Permissions = require("../utils/Permissions")
 module.exports = class RolesManager extends CachedManager {
     constructor(client, guild, roles){
         super(client, Role)
@@ -30,7 +30,7 @@ module.exports = class RolesManager extends CachedManager {
     }
     async create(options, reason) {
         let { name, color, hoist, permissions, position, mentionable, icon, unicodeEmoji } = options;
-    
+        permissions = new Permissions(permissions).bitfield
         const data = await this.client.api.endpoint(`guilds/${this.guild.id}/roles`, "POST", {
             name,
             color,
