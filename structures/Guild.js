@@ -6,7 +6,7 @@ const Channel = require("./Channel");
 const Collection = require("./Collection");
 const Permissions = require("../utils/Permissions")
 module.exports = class Guild extends Base {
-    constructor(client, data) {
+    constructor(client, data={}) {
       super(client)
       this.id = data.id
       

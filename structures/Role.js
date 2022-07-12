@@ -23,7 +23,7 @@ module.exports = class Role extends Base {
     }
 }
 class RoleTags {
-    constructor(tags){
+    constructor(tags={}){
         if(tags.bot_id) this.botId = tags.bot_id
         if(tags.integration_id) this.integrationId = tags.integration_id
         if(tags.premium_subscriber === null) this.premiumSubscriber = true

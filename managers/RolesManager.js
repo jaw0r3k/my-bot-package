@@ -1,6 +1,7 @@
 const Role = require("../structures/Role")
 const CachedManager = require("./CachedManager")
 const Permissions = require("../utils/Permissions")
+const Collection = require("../structures/Collection")
 module.exports = class RolesManager extends CachedManager {
     constructor(client, guild, roles){
         super(client, Role)
@@ -53,6 +54,10 @@ module.exports = class RolesManager extends CachedManager {
       role = this.resolveId(role)
       if (!role) throw new TypeError('INVALID_TYPE', 'role', 'RoleResolvable');
       if(typeof position !== "number") throw new Error("INVALID_TYPE", "position", "number") 
-      this.client.api.endpoint(`guilds/${this.guild.id}/roles/`, "PATCH", { data: { id: id, position, reason }})
+      this.client.api.endpoint(`guilds/${this.guild.id}/roles`, "PATCH", { data: { id: id, position, reason }})
     }
+    async fetch({ cache= true } = {}) {
+        const data = await this.client.api.endpoint(`guilds/${this.guild.id}/roles`)
+        return new Collection(data.map(r => [r.id, this._add(r, { cache})]))
+      }
 }

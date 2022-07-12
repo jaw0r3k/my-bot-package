@@ -26,6 +26,7 @@ module.exports = class UsersManager extends CachedManager {
      * @returns 
      */
       async fetch(id, { cache = true, force = false } = {}) {
+        id = this.resolve(id)
         if (!force) {
           const existing = this.cache.get(id);
           if (existing) return existing;
