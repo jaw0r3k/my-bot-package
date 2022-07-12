@@ -9,3 +9,6 @@ module.exports = (client, data) => {
         guild.members._cache.delete(data.id)
     }
 }
+
+
+

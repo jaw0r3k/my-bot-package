@@ -3,6 +3,10 @@ const Base = require("./Base")
 module.exports = class User extends Base {
     constructor(client, data){
         super(client)
+        this.id = data.id
+        this._patch(data)
+    }
+    _patch(data){
       /**
           * @type {String} Name of user 
         */

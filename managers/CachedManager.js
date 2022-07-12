@@ -1,12 +1,13 @@
 'use strict';
 
+const Collection = require('../structures/Collection');
 const DataManager = require('./DataManager');
 
 class CachedManager extends DataManager {
   constructor(client, holds, iterable) {
     super(client, holds);
 
-    Object.defineProperty(this, '_cache', { value: new Map() });
+    Object.defineProperty(this, '_cache', { value: new Collection() });
 
 
     if (iterable) {
@@ -32,7 +33,7 @@ class CachedManager extends DataManager {
       return clone;
     }
 
-    const entry = this.holds && !( data instanceof this.holds) ? new this.holds(this.client, data, ...extras) : data;
+    const entry = this.holds && !(data instanceof this.holds) ? new this.holds(this.client, data, ...extras) : data;
     if (cache) this._cache.set(id ?? entry.id, entry);
     return entry;
   }

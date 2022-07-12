@@ -1,3 +1,4 @@
+const Collection = require("../structures/Collection");
 const Message = require("../structures/Message");
 const CachedManager = require("./CachedManager");
 
@@ -13,7 +14,7 @@ module.exports = class MessagesManager extends CachedManager {
           return existing;
         }
         
-        const message = new Message(data)
+        const message = new Message(this.client, data)
     
         if (!message) {
           return null;
@@ -24,7 +25,7 @@ module.exports = class MessagesManager extends CachedManager {
         return message;
       }
       async fetchPinned(cache = true) {
-        const data = await this.client.api.endpoint(`channels${this.channel.id}/pins`)
+        const data = await this.client.api.endpoint(`channels/${this.channel.id}/pins`)
         
         return new Map(data.map(m => [m.id, this._add(m, { cache })]));
       }
@@ -32,7 +33,7 @@ module.exports = class MessagesManager extends CachedManager {
         const messageId = this.resolveId(message);
         if (!messageId) throw new TypeError('INVALID_TYPE', 'message', 'MessageResolvable');
     
-        const data = await this.client.api.endpoint(`/channels/${this.channel.id}/messages/${messageId}`, "PATCH", options)
+        const data = await this.client.api.endpoint(`/channels/${this.channel.id}/messages/${messageId}`, "PATCH", { data: options })
     
         const existing = this.cache.get(messageId);
         if (existing) {
@@ -88,7 +89,7 @@ module.exports = class MessagesManager extends CachedManager {
             return this._add(data, { cache });
         } else if(typeof message === "object") {
             const data = await this.client.api.endpoint(`/channels/${this.channel.id}/messages?` + new URLSearchParams(message))
-            return new Map(data.map(m => [m.id, this._add(m, { cache })]))
+            return new Collection(data.map(m => [m.id, this._add(m, { cache })]))
         } else if(typeof message === "number"){
             return this.fetch({ limit: message })
         } else {

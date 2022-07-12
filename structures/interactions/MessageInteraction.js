@@ -1,5 +1,6 @@
 const Interaction = require("../Interaction");
 const Message = require("../Message");
+const InteractionResponses = require("./InteractionResponses");
 
 class MessageInteraction extends Interaction {
     constructor(client, data){

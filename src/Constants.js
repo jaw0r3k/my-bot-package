@@ -1,3 +1,3 @@
 module.exports = {
-    "api": "https://discord.com/api/v10/"
+    "api": "https://discord.com/api/v10"
 }

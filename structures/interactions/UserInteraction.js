@@ -14,7 +14,7 @@ class UserInteraction extends Interaction {
         return new User(client, Object.entries(this.options.users)[0][1])
     }
     get member(){
-        return new Member(client, Object.entries(this.options.members)[0][1])
+        return this.guild.members._add(Object.entries(this.options.members)[0][1])
     }
 }
 InteractionResponses.applyToClass(UserInteraction, ["deferUpdate", "update"])

@@ -1,12 +1,11 @@
-const { default: fetch } = require("node-fetch");
-const Channel = require("./Channel");
-const Constants = require("../src/Constants");
-const MessagesManager = require("../managers/MessagesManager");
+const GuildChannel = require("./GuildChannel");
+
 module.exports = class BaseTextChannel extends GuildChannel {
     constructor(client, data){
         super(client, data);
-         /**
-         * @type {?Map}
+        const MessagesManager = require("../managers/MessagesManager");
+        /**
+         * @type {?MessagesManager}
          */
         this.messages = new MessagesManager(client, this)
         /**
@@ -23,11 +22,6 @@ module.exports = class BaseTextChannel extends GuildChannel {
         this.nsfw = data.nsfw
     }
     async send(data){
-        const headers = { "Content-Type": "application/json", "Authorization": `Bot ${this.client.token}`}
-        fetch(Constants.api + `channels/${this.id}/messages`, {
-            method: "POST",
-            body: JSON.stringify(data),
-            headers
-        })
+        await this.client.api.endpoint(`channels/${this.id}/messages`, "POST", { data })
     }
 }
