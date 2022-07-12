@@ -1,4 +1,4 @@
-const { Collection } = require("discord.js")
+const { Collection } = require("../structures/Collection")
 const { default: fetch } = require("node-fetch")
 const Constants = require("../src/Constants")
 const Member = require("../structures/Member")
