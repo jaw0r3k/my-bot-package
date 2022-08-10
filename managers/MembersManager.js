@@ -1,3 +1,4 @@
+const { Collection } = require("../structures/Collection")
 const { default: fetch } = require("node-fetch")
 const Constants = require("../src/Constants")
 const Member = require("../structures/Member")
@@ -53,19 +54,20 @@ module.exports = class MembersManager extends CachedManager {
         member = this.resolveId(member)
         await this.client.api.endpoint(`guilds/${this.guild.id}/members/${member}`, "DELETE", { reason })
       }
-      async fetch(id, { cache = true, force = false } = {}) {
-        if(typeof id === "string"){
+      async fetch(memberOrOptions, { cache= true, force = false} = {}) {
+        const member = this.resolveId(memberOrOptions)
+        if(member){
 
           if (!force) {
-            const existing = this.cache.get(id);
+            const existing = this.cache.get(member);
             if (existing) return existing;
           }
           
-          const data = await this.client.api.endpoint(`guilds/${this.guild.id}/members/${id}`)
+          const data = await this.client.api.endpoint(`guilds/${this.guild.id}/members/${member}`)
           return this._add(data, { cache });
         } else {
           const data = await this.client.api.endpoint(`guilds/${this.guild.id}/members`) // TODO: Fix it
-          return data
+          return new Collection(data.map(m => [m.user.id, this._add(m, { cache: memberOrOptions.cache})]))
         }
         }
       me(){

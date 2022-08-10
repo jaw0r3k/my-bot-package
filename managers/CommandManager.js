@@ -10,6 +10,10 @@ module.exports = class CommandManager extends CachedManager {
         const data = await this.client.api.endpoint(`applications/${this.client.application.id}/commands`, "POST", { data: command })
         return this._add(data)
     }
+        async set(command){
+        const data = await this.client.api.endpoint(`applications/${this.client.application.id}/commands`, "PUT", { data: command })
+        return this._add(data)
+    }
 }
 
 

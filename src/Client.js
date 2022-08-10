@@ -19,6 +19,7 @@ const WebSocketManager = require("./ws.js")
       this.commands = new CommandManager(this)
       this.ws = new WebSocketManager(this);
       this.api = new ClientApi(this)
+      this.options = options
       this.intents = new Intents(options.intents)
     }
     async login(token = this.token) {

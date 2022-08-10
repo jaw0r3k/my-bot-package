@@ -6,7 +6,7 @@ class Commandnteraction extends Interaction {
     constructor(client, data){
         super(client, data)
         this.data = data.data
-        this.options = new InteractionOptionsResolver(this.client, data.data.options)
+        this.options = new InteractionOptionsResolver(this.client, data.data.options, data.data.resolved)
         this.commandName = this.data.name	
     }
 }

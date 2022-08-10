@@ -6,23 +6,6 @@ module.exports = class GuildsManager extends CachedManager {
        super(client, Guild)
 
     }
-    _add(data, { cache = true } = {}) {
-        const existing = this.cache.get(data.id);
-        if (existing) {
-          if (cache) existing._patch(data);
-          return existing;
-        }
-        
-        const guild = new Guild(this.client, data);
-    
-        if (!guild) {
-          return null;
-        }
-    
-        if (cache) this.cache.set(guild.id, guild);
-    
-        return guild;
-      }
     /**
      * 
      * @param {String} id 

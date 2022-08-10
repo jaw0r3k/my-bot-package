@@ -1,5 +1,8 @@
 import { EventEmitter } from "node:events";
+import { Stream } from "node:stream";
+import { Url } from "node:url";
 export type Awaitable<T> = T | PromiseLike<T>;
+export type EnumHolder<T> = { [P in keyof T]: T[P] };
 export type Constructable<T> = abstract new (...args: any[]) => T;
 export type If<T extends boolean, A, B = null> = T extends true ? A : T extends false ? B : A | B;
 export class Client<Ready extends boolean = boolean> extends EventEmitter {
@@ -33,7 +36,7 @@ export class Client<Ready extends boolean = boolean> extends EventEmitter {
     public removeAllListeners<S extends string | symbol>(event?: Exclude<S, keyof ClientEvents>): this;
 }
 export interface ClientOptions {
-    intents: number
+    intents: BitFieldResolvable<IntentsString, number>
     waitTimeout: number 
 }
 export interface ClientEvents {
@@ -200,11 +203,41 @@ export class Role {
   public tags: { botId?: string, integrationId? : string, premiumSubscriber: boolean}
   public unicodeEmoji: string | null
 }
-export class Member {
-  
+export enum ButtonStyle {
+  Primary,
+  Secondary,
+  Success,
+  Danger,
+  Link
+}
+
+// export type EnumResolvable<T> = T | (keyof typeof T);
+export class Button {
+    public constructor(data?: object)
+    public label: string
+    public url: string
+    public customId: string
+    public emoji: object
+    public style: ButtonStyle
+    public setStyle(style: ButtonStyle| (keyof typeof ButtonStyle)) 
+}export class Member {
+  public constructor(data:object)
+  public nickname: string|null
+  public user: User
+  public roles: MemberRolesManager
+  public avatar: string|null
+
 }
 export class User {
     
+}
+export class Attachment {
+  public constructor(data?:object)
+  setName(name:string): this
+  seFile(attachment: Buffer|Stream|string, name:string): this
+  setSpoiler(spoiler?:boolean): this
+  setDescription(description:string): this
+  setName(name:string): this
 }
 export abstract class CachedManager<K, Holds, R> extends DataManager<K, Holds, R> {
   protected constructor(client: Client, holds: Constructable<Holds>);
@@ -221,13 +254,20 @@ export class DataManager<K, Holds, R> {
     public resolveId(resolvable: R): K | null;
     public valueOf(): Collection<K, Holds>;
 }
-  export class GuildManager extends CachedManager<string, Guild> {
+
+export class Collection<K, Holds>{
+  public constructor(keys: Array<Array<K|Holds>>)
+}
+  export class GuildManager extends CachedManager<string, Guild, Guild> {
     private constructor(client: Client, iterable?: Iterable<object>);
     public fetch(options: string): Promise<Guild>;
   }
-  export class MemberManager extends CachedManager<string, Member> {
+  export class MemberManager extends CachedManager<string, Member, Guild> {
     private constructor(client: Client, iterable?: Iterable<object>);
     public guild: Guild;
-    public create(name: string, options?: GuildCreateOptions): Promise<Guild>;
+    public create(name: string, options?: object): Promise<Guild>;
     public fetch(options: string): Promise<Guild>;
   }
+export class MemberRolesManager extends CachedManager<string, Role, Member> {
+  
+}
