@@ -72,6 +72,7 @@ module.exports = class Message extends Base {
                * @type {Boolean} If message is pinned 
               */
               this.pinned = data.pinned ?? false
+              this.member = this.guild.members._add(data.member, true, { extras: [this.guild, this.author]})
               /**
                * @type  {?(Number|String)} Message nonce
                */
@@ -117,9 +118,9 @@ module.exports = class Message extends Base {
     /**
     * @property {(Member|null)} Message member 
     */
-    get member(){
-            return this.guild?.members.cache.get(this.author.id) ?? null
-    }
+    // get member(){
+    //         return this.guild?.members.cache.get(this.author.id) ?? null
+    // }
     async reply(options) {
         if (!this.channel) return Promise.reject(new Error('CHANNEL_NOT_CACHED'));
         if(typeof options === "string") options = { content: options}

@@ -74,9 +74,9 @@ module.exports = class MessagesManager extends CachedManager {
      * 
     */
     /**
-     * @param {Snowflake|FetchManyMessagesOptions} [message] Message id or options
+     * @param {String|FetchManyMessagesOptions} [message] Message id or options
      * @param {BaseFetchOptions} [options]
-     * @returns {Promise<Message|Collection<Snowflake, Message>>}
+     * @returns {Promise<Message|Collection<String, Message>>}
     */
       async fetch(message, { cache = true, force = false } = {}) {
         if(typeof message === "string"){

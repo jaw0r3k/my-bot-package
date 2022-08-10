@@ -12,6 +12,7 @@
   "author": "Jaw0r3k",
   "license": "ISC",
   "dependencies": {
+    "form-data": "^4.0.0",
     "node-fetch": "^2.6.7",
     "ws": "^8.8.0"
   }

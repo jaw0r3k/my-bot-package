@@ -25,11 +25,6 @@ module.exports = class BansManager extends CachedManager {
         return ban;
       }
     /**
-   * @typedef {Object} BaseFetchOptions
-   * @property {boolean} [cache=true] Whether to cache the fetched data if it wasn't already
-   * @property {boolean} [force=false] Whether to skip the cache check and request the API
-   */
-    /**
      * 
      * @param {String} id 
      * @param {BaseFetchOptions} options 

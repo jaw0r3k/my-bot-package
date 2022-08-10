@@ -44,4 +44,17 @@ module.exports = class ChannelsManager extends CachedManager {
         const data = await this.client.api.endpoint(`channels/${id}`)
         return this._add(data, this.client.guilds._cache.get(data.guild_id) ?? null, { cache });
       }
+      async delete(channel, reason) {
+        const id = this.resolveId(channel)
+        if(!id) throw new Error("Invalid Channel")
+        await this.client.api.endpoint(`channels/${id}`, "DELETE", { reason })
+        return null;
+      }
+      async edit(channel, options, reason) {
+        const id = this.resolveId(channel)
+        if(!id) throw new Error("Invalid Channel")
+        if(!options) throw new Error("No options")
+        const data = await this.client.api.endpoint(`channels/${id}`, "PATCH", { reason, data: options})
+        return this._add(data);
+      }
 }

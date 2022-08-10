@@ -4,16 +4,16 @@ const Base = require("./Base")
 const User = require("./User")
 
 module.exports = class Member extends Base {
-  constructor(client, data, guild){
+  constructor(client, data, guild, user){
     super(client)
     this.guild = guild
-    this._patch(data)
+    this._patch(data, user)
   }
-  _patch(data){
+  _patch(data, user){
     /**
       * @type {User} User of member
     */
-     this.user = this.client.users._add(data.user)
+    this.user = data.user ?? user ? this.client.users._add(data.user ?? user) : this.client.users.cache.get(data.id)
     /**
       * @type {(String|null)} NIckname of member
     */

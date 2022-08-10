@@ -6,6 +6,7 @@ module.exports = class Role extends Base {
         super(client)
         this.guild = guild
         this.id = data.id
+        this._patch(data)
     }
     _patch(data){
         this.name = data.name

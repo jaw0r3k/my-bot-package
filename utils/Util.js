@@ -1,4 +1,6 @@
-class Util {
+const { parse } = require('node:path');
+
+module.exports = class Util {
     static flatten(obj, ...props) {
         if (!isObject(obj)) return obj;
     
@@ -31,5 +33,9 @@ class Util {
         }
     
         return out;
+      }
+      static basename(path, ext) {
+        const res = parse(path);
+        return ext && res.ext.startsWith(ext) ? res.name : res.base.split('?')[0];
       }
 }

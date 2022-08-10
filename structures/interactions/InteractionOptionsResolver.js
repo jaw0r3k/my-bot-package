@@ -1,3 +1,5 @@
+const Role = require("../Role");
+
 module.exports = class InteractionOptionsResolver {
     constructor(client, options, resolvedOptions){
         this.client = client
@@ -46,9 +48,24 @@ module.exports = class InteractionOptionsResolver {
         if(option.type !== 5) return null
         return option.value
     }
-    getChannel(name){
+    getUser(name){
+        const option = this.data.find(option => option.name === name)
+        if(option.type !== 6) return null
+        return this.client.users._add(this.resolved.users[option.value] ?? null, false)
+    }
+    getRole(name){
+        const option = this.data.find(option => option.name === name)
+        if(option.type !== 7) return null
+        return new Role(client, this.resolved.roles[option.value] ?? null, )
+    }
+    getAttachment(name){
         const option = this.data.find(option => option.name === name)
         if(option.type !== 7) return null
         return this.client.channels._add(this.resolved.channels[option.value] ?? null, null, false)
+    }
+    getFocused(){
+        const option = this.data.find(option => option.focused)
+        if(!option) return null
+        return option.value
     }
 }

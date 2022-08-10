@@ -10,16 +10,19 @@ module.exports = class MemberRolesManager extends CachedManager {
      }
     }
     get cache(){
-        this.member.guild.roles.cache.filter(r => this._roles.includes(r.id))
+        return this.member.guild.roles.cache.filter(r => this._roles.includes(r.id))
     }
-      get premiumSubscriberRole() {
-        return this.cache.find(role => role.tags?.premiumSubscriber) ?? null;
-      }
+    get highest(){
+       return this.cache.sort((a, b) => a.position - b.position).first() ?? null
+    }
+    get premiumSubscriberRole() {
+      return this.cache.find(role => role.tags?.premiumSubscriber) ?? null;
+    }
     
-      get botRole() {
-        if (!this.member.user.bot) return null;
-        return this.cache.find(role => role.tags?.botId === this.member.user.id) ?? null;
-      }
+    get botRole() {
+      if (!this.member.user.bot) return null;
+      return this.cache.find(role => role.tags?.botId === this.member.user.id) ?? null;
+    }
     async add(role, reason){
         role = this.resolveId(role)
         return this.client.api.endpoint(`guilds${member.guild.id}/members/${memebr.id}/roles/${role}`, "PUT", { reason })
