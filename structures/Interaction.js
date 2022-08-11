@@ -6,7 +6,7 @@ module.exports = class Interaction extends Base {
         this.applicationId = data.application_id
         this.id = data.id
         this.channelId = data.channel_id
-        this.guildId = data.guild_id
+        this.guildId = data.guild_id ?? null
         this.type = data.type
         Object.defineProperty(this, 'token', { value: data.token });
         this.version = data.version

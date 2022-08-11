@@ -35,12 +35,10 @@ const ClientPresence = require("../structures/presence/ClientPresence");
     })
     this.ws.on("error", console.log)
     this.ws.on("close", (event) => {
-        console.log(event)
         this.$resume()
     })
     this.ws.on("message", (data) => {
         const pl = JSON.parse(data)
-        console.log(pl)
         const {t, event, op, d, s} = pl
         if(s) this.lastSeq = s
         if(op === 10){
@@ -48,7 +46,7 @@ const ClientPresence = require("../structures/presence/ClientPresence");
         } 
         
         else if(t){
-            if(["READY", "INTERACTION_CREATE", "GUILD_CREATE", "GUILD_DELETE", "GUILD_MEMBER_CREATE", "MESSAGE_CREATE", "CHANNEL_CREATE", "CHANNEL_DELETE"].includes(t)){
+            if(["READY", "INTERACTION_CREATE", "GUILD_CREATE", "GUILD_DELETE", "GUILD_MEMBER_CREATE", "MESSAGE_CREATE", "CHANNEL_CREATE", "CHANNEL_DELETE", "GUILD_ROLE_CREATE", "GUILD_ROLE_DELETE", "GUILD_ROLE_UPDATE"].includes(t)){
                 require(`../handlers/${t}.js`)(this.client, d, event)
             }
         }
@@ -58,12 +56,13 @@ const ClientPresence = require("../structures/presence/ClientPresence");
         return setInterval(() => {
             console.log("heartbeating")
             this.ws.send(JSON.stringify({ op: 1, d: -1}))
-        }, ms * Math.random()).unref()
+        }, ms * (Math.random() * (1 - 0.6 + 1) + 0.6)).unref()
     }
     async $resume(){
         await this.ws.close()
-        this.ws = await new WebSocket(`${this.resumeGatewayUrl}?v=10&encoding=json`)
+        this.ws = await new WebSocket(`${this.resumeGatewayUrl ?? "wss://gateway.discord.gg"}?v=10&encoding=json`)
         this.ws.on("open", () => {
+            console.log("Resuming!")
             this.ws.send(JSON.stringify({
                 op: 6,
                 d: {
