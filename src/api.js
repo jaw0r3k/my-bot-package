@@ -8,7 +8,7 @@ module.exports = class ClientApi {
     constructor(client){
         this.client = client
     }
-    async endpoint(end, method="GET", data){
+    async endpoint(end, method="GET", opts){
         let options = {
             method: method,
             headers: {
@@ -16,24 +16,23 @@ module.exports = class ClientApi {
                 "Content-Type": "application/json"
             }
           }
-        if(data){
-            if(data.reason){ options.headers["X-Audit-Log-Reason"] = data.reason; }
-            if(data.files?.[0]){
+        if(opts){
+            if(opts.reason){ options.headers["X-Audit-Log-Reason"] = opts.reason; }
+            if(opts.files?.[0]){
                 delete options.headers["Content-Type"]
                 const form = new FormData();
                 form.append("payload_json", JSON.stringify(
-                    data.data
+                    opts.data
                 ));
-                data.files.forEach((f, index) => form.append(`file[${index}]`, f.file, f.name ))
+                opts.files.forEach((f, index) => form.append(`file[${index}]`, f.file, f.name ))
                 // options.payload_json = data.data
                 options.body = form
             } else {
-                if(data.data) options.body = JSON.stringify(data.data)
+                if(opts.data) options.body = JSON.stringify(opts.data)
             }
         }
         const response = await fetch(`${Constants.api}/${end}`, options)
         if(response.status === 204) return null
-        const lol = await(response).json()
-        return lol
+        return await response.json()
     }
 }

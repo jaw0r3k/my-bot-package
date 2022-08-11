@@ -1,16 +1,14 @@
-const WebSocket = require("ws")
-    /**
-     * A user's status. Must be one of:
-     * * `online`
-     * * `idle`
-     * * `invisible`
-     * * `dnd` (do not disturb)
-     * @typedef {string} PresenceStatusData
-     */
-module.exports = class WebSocketManager {
-    constructor(client){
-        this.client = client
-        this.ws = new WebSocket("wss://gateway.discord.gg/?v=9&encoding=json")
+const WebSocket = require("ws");
+const ClientPresence = require("../structures/presence/ClientPresence");
+
+    module.exports = class WebSocketManager {
+        constructor(client){
+            Object.defineProperty(this, 'client', { value: client });
+            this.ws = new WebSocket("wss://gateway.discord.gg/?v=10&encoding=json")
+            this.resumeGatewayUrl = null;
+            this.sessionId = null;
+            this.sessionType = null
+            this.lastSeq = null
     }
     connect(){
         const payload = {
@@ -19,28 +17,34 @@ module.exports = class WebSocketManager {
             token: this.client.token,
             intents: this.client.intents || 37377, 
             properties: {
-                $os: "linux",
-                $browser: "bot-package",
-                $device: "bot-package"
+                os: this.client.options.ws?.os || "linux" ,
+                browser: this.client.options.ws?.browser ||"bot-package",
+                device: this.client.options.ws?.device ||"bot-package"
             },
-            presence: {
+            presence: new ClientPresence(this.client.options.presence || {
 
             /**
                * @param {PresenceStatusData} status Status to change to
              */
                 status: "online"
-            }
+            }).toJSON()
         },
     }  
     this.ws.on("open", () =>{
         this.ws.send(JSON.stringify(payload))
     })
+    this.ws.on("error", console.log)
+    this.ws.on("close", (event) => {
+        console.log(event)
+        this.$resume()
+    })
     this.ws.on("message", (data) => {
         const pl = JSON.parse(data)
-        const {t, event, op, d} = pl
+        console.log(pl)
+        const {t, event, op, d, s} = pl
+        if(s) this.lastSeq = s
         if(op === 10){
-            const { heartbeat_interval } = d
-            this.$heartbeat(heartbeat_interval)
+            this.$heartbeat(d.heartbeat_interval )
         } 
         
         else if(t){
@@ -54,7 +58,21 @@ module.exports = class WebSocketManager {
         return setInterval(() => {
             console.log("heartbeating")
             this.ws.send(JSON.stringify({ op: 1, d: -1}))
-        }, ms).unref()
+        }, ms * Math.random()).unref()
+    }
+    async $resume(){
+        await this.ws.close()
+        this.ws = await new WebSocket(`${this.resumeGatewayUrl}?v=10&encoding=json`)
+        this.ws.on("open", () => {
+            this.ws.send(JSON.stringify({
+                op: 6,
+                d: {
+                token: this.client.token,
+                session_id: this.sessionId,
+                seq: this.lastSeq
+                }
+            }))
+        })
     }
     destroy(){
         this.ws.close()

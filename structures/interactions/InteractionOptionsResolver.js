@@ -2,7 +2,7 @@ const Role = require("../Role");
 
 module.exports = class InteractionOptionsResolver {
     constructor(client, options, resolvedOptions){
-        this.client = client
+        Object.defineProperty(this, 'client', { value: client });
         this.data = options
         if (this.data[0]?.type === 2) {
             this._group = this.data[0].name;
