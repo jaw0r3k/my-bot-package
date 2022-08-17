@@ -22,7 +22,7 @@ class DataManager {
   }
 
   valueOf() {
-    return this.cache;
+    return this;
   }
 }
 module.exports = DataManager;

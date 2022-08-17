@@ -41,15 +41,51 @@ export interface ClientOptions {
 }
 export interface ClientEvents {
     ready: [client: Client]
-    messageCreate: [message: Object]
+    messageCreate: [message: Message]
+    interactionCreate: [interaction: Object]
     guildCreate: [guild: Guild]
     guildDelete: [guild: Guild]
+    interactionCreate: [interaction: Interaction]
 }
-export class Channel {
+class Base {
+  constructor(client)
+  public client: Client
+  private _clone(): this
+  private _patch(data:any): this
+  private _update(): this
+  toJSON(...props): this
+  valueOf(): string
+}
+export class Channel extends Base {
     public constructor(client: Client, data?: Object);
     public name: String
     public id: String
     public guild_id?: String
+}
+export class Message extends Base {
+  public constructor(client: Client, data?: Object);
+  public name: String
+  public id: String
+  public guildId?: String
+}
+export class Interaction extends Base {
+  public constructor(client: Client, data?: Object);
+  public static token: string
+  public static id: string
+  public channelId: string
+  public guildId: ?string
+  public type: number
+  public version: number
+  public guild: ?Guild
+  public channel: Channel
+  public member: ?Member
+  public user: User
+  public locale: string
+  public guildLocale: string
+  isCommand(): this is CommandInteraction
+}
+class CommandInteraction extends Interaction {
+  public constructor(client: Client, data?: Object);
 
 }
 export type RecursiveReadonlyArray<T> = ReadonlyArray<T | RecursiveReadonlyArray<T>>;
@@ -182,7 +218,7 @@ export class Guild {
     public owner_id: String
     public permissions?: String
     public region?: String
-    public afk_channel_id: String|null
+    public afkChannelId: ?String
     public roles: Map<String, Role>
     public channels: Map<String, BaseGuildChannel>
     public members: Map<String, Member>
@@ -199,9 +235,9 @@ export class Role {
   public hoist: boolean
   public position: number
   public permissions: Permissions
-  public icon: string | null;
+  public icon: ?string ;
   public tags: { botId?: string, integrationId? : string, premiumSubscriber: boolean}
-  public unicodeEmoji: string | null
+  public unicodeEmoji: ?string
 }
 export enum ButtonStyle {
   Primary,
@@ -222,10 +258,10 @@ export class Button {
     public setStyle(style: ButtonStyle| (keyof typeof ButtonStyle)) 
 }export class Member {
   public constructor(data:object)
-  public nickname: string|null
+  public nickname: ?string
   public user: User
   public roles: MemberRolesManager
-  public avatar: string|null
+  public avatar: ?string
 
 }
 export class User {
@@ -249,9 +285,9 @@ export class DataManager<K, Holds, R> {
     public readonly cache: Collection<K, Holds>;
     private holds: Constructable<Holds>
     public resolve(resolvable: Holds): Holds;
-    public resolve(resolvable: R): Holds | null;
+    public resolve(resolvable: R): ?Holds ;
     public resolveId(resolvable: K | Holds): K;
-    public resolveId(resolvable: R): K | null;
+    public resolveId(resolvable: R): ?K ;
     public valueOf(): Collection<K, Holds>;
 }
 

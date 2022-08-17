@@ -1,6 +1,6 @@
 const Activity = require("./ClientActivity")
 
-module.exports = class Presence {
+module.exports = class ClientPresence {
     constructor(data={}) {
         this.since = new Date(data.since).getTime() || Date.now()
         this.activities = data.activities?.map(a => new Activity(a)) ?? []
@@ -15,6 +15,17 @@ module.exports = class Presence {
         this.since = new Date(since).getTime() 
         return this
     }
+        /**
+     * A user's status. Must be one of:
+     * * `online`
+     * * `idle`
+     * * `invisible`
+     * * `dnd` (do not disturb)
+     * @typedef {string} ClientPresenceStatus
+     */
+    /**
+     * @param {ClientPresenceStatus} status
+     */
     setStatus(status="online"){
         this.status = status
         return this

@@ -14,6 +14,8 @@ module.exports = class Guild extends Base {
         data.channels.map((channel) => {
           return [channel.id, new Channel(client, channel)];
         }));
+        this.voiceStates = data.voice_states
+        this.presences = data.presences
         this.bans = new BansManager(this.client, this, data.bans)
         this.roles = new RolesManager(this.client, this, data.roles)
         this.emojis = new Collection(

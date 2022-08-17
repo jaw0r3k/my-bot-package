@@ -37,6 +37,9 @@ class CachedManager extends DataManager {
     if (cache) this._cache.set(id ?? entry.id, entry);
     return entry ?? null;
   }
+  valueOf() {
+    return this.cache;
+  }
 }
 
 module.exports = CachedManager;

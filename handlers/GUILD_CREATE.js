@@ -9,13 +9,8 @@ module.exports = (client, data) => {
         client.channels._add(channel, guild)
     }
     if (client.status === "READY") {
-        /**
-         * Emitted whenever the client joins a guild.
-         * @event Client#guildCreate
-         * @param {Guild} guild The created guild
-         */
         client.emit("guildCreate", guild);
-    } else if(client.expectedGuilds.length === client.guilds._cache.size) {
+    } else if(client.expectedGuilds.length === client.guilds.cache.size) {
         delete client.expectedGuilds
         client.status = "READY"
         client.emit("ready", client)

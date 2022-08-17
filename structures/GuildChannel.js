@@ -23,6 +23,6 @@ module.exports = class GuildChannel extends Channel {
      * @type {Guild}
      */
     get guild(){
-        return client.guilds.get(data.guild_id)
+        return client.guilds.cache.get(data.guild_id)
     }
 }

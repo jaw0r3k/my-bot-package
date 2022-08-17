@@ -1,6 +1,6 @@
 const { ActivityType } = require("../../src/enums")
 
-module.exports = class Activity {
+module.exports = class ClientActivity {
     constructor(data={}) {
         this.name = data.name
         this.type = typeof data.type === "number" ? data.type : ActivityType[data.type]
