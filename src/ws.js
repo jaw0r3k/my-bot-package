@@ -4,13 +4,14 @@ const ClientPresence = require("../structures/presence/ClientPresence");
     module.exports = class WebSocketManager {
         constructor(client){
             Object.defineProperty(this, 'client', { value: client });
-            this.ws = new WebSocket("wss://gateway.discord.gg/?v=10&encoding=json")
+            this.ws = null
             this.resumeGatewayUrl = null;
             this.sessionId = null;
             this.sessionType = null
             this.lastSeq = null
     }
     connect(){
+        this.ws = new WebSocket("wss://gateway.discord.gg/?v=10&encoding=json")
         const payload = {
             op: 2,
             d: {
@@ -30,15 +31,17 @@ const ClientPresence = require("../structures/presence/ClientPresence");
             }).toJSON()
         },
     }  
-    this.ws.on("open", () =>{
+    this.ws.once("open", () =>{
         this.ws.send(JSON.stringify(payload))
     })
     this.ws.on("error", console.log)
     this.ws.on("close", (event) => {
         this.$resume()
     })
+    this.ws.on("unexpected-response", console.log)
     this.ws.on("message", (data) => {
         const pl = JSON.parse(data)
+        console.log(pl)
         const {t, event, op, d, s} = pl
         if(s) this.lastSeq = s
         if(op === 10){
@@ -47,8 +50,10 @@ const ClientPresence = require("../structures/presence/ClientPresence");
         
         else if(t){
             if(["READY", "INTERACTION_CREATE", "GUILD_CREATE", "GUILD_DELETE", "GUILD_MEMBER_CREATE", "MESSAGE_CREATE", "CHANNEL_CREATE", "CHANNEL_DELETE", "GUILD_ROLE_CREATE", "GUILD_ROLE_DELETE", "GUILD_ROLE_UPDATE"].includes(t)){
-                require(`../handlers/${t}.js`)(this.client, d, event)
+                return require(`../handlers/${t}.js`)(this.client, d, event)
             }
+        } else {
+            console.log(pl)
         }
     })
 }
