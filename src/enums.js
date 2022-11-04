@@ -3,7 +3,6 @@ function createEnum(keys) {
     const coolEnum = {};
     for (const [index, key] of keys.entries()) {
       if (key === null) continue;
-      console.log(index + 0, key)
       coolEnum[key] = index;
       coolEnum[index] = key;
     }

@@ -6,6 +6,7 @@ const UsersManager = require('../managers/UserManager.js');
 const Intents = require('../utils/Intents.js');
 const ClientApi = require('./api.js');
 const WebSocketManager = require("./ws.js")
+const resolveClientOptions = require("./options")
  module.exports = class Client extends EventEmitter {
      /**
       * @param {ClientOptions} options 
@@ -19,7 +20,7 @@ const WebSocketManager = require("./ws.js")
       this.commands = new CommandManager(this)
       this.ws = new WebSocketManager(this);
       this.api = new ClientApi(this)
-      this.options = options
+      this.options = resolveClientOptions(options)
       this.intents = new Intents(options.intents)
     }
     async login(token = this.token) {
@@ -35,9 +36,3 @@ const WebSocketManager = require("./ws.js")
       this.token = null;
     }
 }
-/**
- * Options for a client.
- * @typedef {Object} ClientOptions
- * @property {number} intents Intents to enable 
- * @property {number} waitTimeout Time to wait for guilds
- */

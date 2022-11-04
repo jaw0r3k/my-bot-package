@@ -23,10 +23,6 @@ const ClientPresence = require("../structures/presence/ClientPresence");
                 device: this.client.options.ws?.device ||"bot-package"
             },
             presence: new ClientPresence(this.client.options.presence || {
-
-            /**
-               * @param {PresenceStatusData} status Status to change to
-             */
                 status: "online"
             }).toJSON()
         },
@@ -41,7 +37,6 @@ const ClientPresence = require("../structures/presence/ClientPresence");
     this.ws.on("unexpected-response", console.log)
     this.ws.on("message", (data) => {
         const pl = JSON.parse(data)
-        console.log(pl)
         const {t, event, op, d, s} = pl
         if(s) this.lastSeq = s
         if(op === 10){

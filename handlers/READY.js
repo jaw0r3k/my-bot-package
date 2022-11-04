@@ -1,3 +1,4 @@
+const Intents = require("../utils/Intents");
 const ClientUser = require("../structures/ClientUser");
 
 module.exports = (client, data) => {
@@ -12,5 +13,5 @@ module.exports = (client, data) => {
         client.status = "READY"
         client.emit("ready", client)
         }
-    }, (client.intents & 1) === 1 ? client.waitTimeout ?? 15000 : 0)
+    }, (client.intents & Intents.Flags.Guilds) === 1 ? client.guildWaitTimeout ?? 20000 : 0)
 }

@@ -89,7 +89,7 @@ class MessagePayLoad {
         : this.options.allowedMentions;
 
     if (allowedMentions) {
-      allowedMentions = allowedMentions.clone();
+      allowedMentions =  Object.assign(Object.create(allowedMentions), allowedMentions);;
       allowedMentions.replied_user = allowedMentions.repliedUser;
       delete allowedMentions.repliedUser;
     }

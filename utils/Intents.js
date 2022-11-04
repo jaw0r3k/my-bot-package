@@ -23,4 +23,5 @@ module.exports = class Intents extends BitField {
         AutoModerationConfiguration: 1048576,
         AutoModerationExecution: 2097152
     }
+    static All = Object.values(Intents.Flags).reduce((all, p) => all | p, 0);
 }

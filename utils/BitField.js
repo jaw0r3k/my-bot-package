@@ -66,7 +66,7 @@ class BitField {
         if (typeof this.Flags[bit] !== 'undefined') return this.Flags[bit];
         if (!isNaN(bit)) return typeof defaultBit === 'bigint' ? BigInt(bit) : Number(bit);
         }
-        throw new RangeError('BITFIELD_INVALID', bit);
+        throw new RangeError('BitField Invalid', bit);
     }
     static Flags = {}
     static defaultBit = 0
